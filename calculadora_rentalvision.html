@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora — Rental Vision Publicidad</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f4f6f9;color:#1a1a2e;min-height:100vh;}
+    .topbar{background:#0a0a1a;padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3);}
+    .topbar-logo{width:36px;height:36px;background:#29b6f6;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .topbar-brand{font-size:16px;font-weight:700;color:white;letter-spacing:.3px;}
+    .topbar-sub{font-size:11px;color:#90caf9;margin-top:1px;}
+    .topbar-year{font-size:11px;color:rgba(255,255,255,.3);margin-left:auto;}
+    .container{max-width:860px;margin:0 auto;padding:24px 16px 48px;}
+    .card{background:white;border-radius:12px;border:1px solid #e8edf3;padding:20px 24px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+    .sec-title{font-size:10px;font-weight:700;color:#8892a4;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;}
+    .circuit-banner{background:#0a0a1a;border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;border:1.5px solid transparent;transition:border-color .2s;margin-bottom:14px;}
+    .circuit-banner:hover{border-color:#29b6f6;}
+    .circuit-banner.active{border-color:#29b6f6;background:#0d1a30;}
+    .cb-left{display:flex;align-items:center;gap:12px;}
+    .cb-icon{width:34px;height:34px;border-radius:8px;background:rgba(41,182,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .cb-title{font-size:14px;font-weight:600;color:white;}
+    .cb-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px;}
+    .cb-badge{font-size:11px;padding:4px 14px;border-radius:20px;background:#29b6f6;color:#0a0a1a;font-weight:700;white-space:nowrap;flex-shrink:0;}
+    .cb-badge.off{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);}
+    .search-wrap{position:relative;margin-bottom:12px;}
+    .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:#8892a4;fill:none;stroke-width:2;stroke-linecap:round;}
+    .search-input{width:100%;padding:10px 38px 10px 36px;border:1px solid #dde3ec;border-radius:8px;font-size:13px;color:#1a1a2e;background:#f8fafc;outline:none;transition:border-color .15s,box-shadow .15s;}
+    .search-input:focus{border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.1);background:white;}
+    .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#e2e8f0;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:12px;color:#64748b;}
+    .search-clear.vis{display:flex;}
+    .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+    .ftag{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid #dde3ec;cursor:pointer;color:#64748b;background:white;transition:all .15s;}
+    .ftag:hover{border-color:#185FA5;color:#185FA5;}
+    .ftag.active{background:#0a0a1a;color:white;border-color:#0a0a1a;}
+    .results-count{font-size:12px;color:#8892a4;margin-bottom:10px;}
+    .results-count strong{color:#1a1a2e;}
+    .screen-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:360px;overflow-y:auto;padding-right:4px;}
+    .screen-item{border:1px solid #e8edf3;border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;align-items:flex-start;gap:8px;background:white;}
+    .screen-item:hover{border-color:#b0bec5;background:#fafbfc;}
+    .screen-item.sel{border:2px solid #185FA5;background:#EBF3FD;}
+    .screen-item.circuit-sel{border:2px solid #29b6f6;background:rgba(41,182,246,.07);}
+    .chk{width:16px;height:16px;border:1.5px solid #c8d0dc;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:white;}
+    .screen-item.sel .chk{background:#185FA5;border-color:#185FA5;}
+    .screen-item.circuit-sel .chk{background:#29b6f6;border-color:#29b6f6;}
+    .screen-item.sel .chk::after,.screen-item.circuit-sel .chk::after{content:'';width:8px;height:5px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg) translateY(-1px);display:block;}
+    .s-info{flex:1;min-width:0;}
+    .s-top{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:2px;}
+    .s-cod{font-size:11px;font-weight:700;color:#185FA5;}
+    .s-badge{font-size:10px;padding:1px 6px;border-radius:8px;background:#f1f5f9;color:#64748b;}
+    .s-name{font-size:12px;color:#1a1a2e;line-height:1.35;margin-bottom:2px;}
+    .s-side{font-size:11px;color:#8892a4;}
+    .s-traffic{font-size:11px;color:#0F6E56;font-weight:600;margin-top:3px;}
+    .s-price{font-size:11px;font-weight:600;color:#1a1a2e;margin-top:2px;}
+    .no-results{font-size:13px;color:#8892a4;padding:20px 0;text-align:center;grid-column:1/-1;}
+    .days-wrap{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+    .day-btn{font-size:12px;padding:6px 14px;border-radius:20px;border:1px solid #dde3ec;cursor:pointer;color:#64748b;background:white;transition:all .15s;}
+    .day-btn:hover{border-color:#185FA5;color:#185FA5;}
+    .day-btn.active{background:#0a0a1a;color:white;border-color:#0a0a1a;}
+    .custom-days{display:flex;align-items:center;gap:10px;margin-top:10px;}
+    .custom-days label{font-size:13px;color:#64748b;}
+    .custom-days input{width:90px;padding:7px 10px;border:1px solid #dde3ec;border-radius:8px;font-size:13px;color:#1a1a2e;outline:none;}
+    .disc-row{display:flex;align-items:center;gap:12px;}
+    .disc-row label{font-size:13px;color:#64748b;white-space:nowrap;}
+    .disc-row input[type=range]{flex:1;}
+    .disc-val{font-size:15px;font-weight:700;color:#1a1a2e;min-width:40px;text-align:right;}
+    .client-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .client-field{display:flex;flex-direction:column;gap:5px;}
+    .client-field label{font-size:12px;color:#64748b;font-weight:500;}
+    .client-field input{padding:8px 12px;border:1px solid #dde3ec;border-radius:8px;font-size:13px;color:#1a1a2e;outline:none;background:#f8fafc;}
+    .client-field input:focus{border-color:#185FA5;background:white;}
+    .result-main{background:#0a0a1a;border-radius:12px;padding:20px 24px;margin-bottom:14px;color:white;}
+    .r-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;}
+    .r-label{font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+    .r-val{font-size:34px;font-weight:700;color:white;}
+    .r-val-sm{font-size:22px;font-weight:600;color:#29b6f6;}
+    .r-note{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px;}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px;}
+    .met{background:white;border:1px solid #e8edf3;border-radius:10px;padding:14px 16px;}
+    .met-label{font-size:11px;color:#8892a4;margin-bottom:4px;}
+    .met-val{font-size:18px;font-weight:700;color:#1a1a2e;}
+    .bktable{width:100%;border-collapse:collapse;font-size:13px;}
+    .bktable th{font-size:10px;font-weight:700;color:#8892a4;text-transform:uppercase;letter-spacing:.06em;padding:0 10px 10px 0;border-bottom:2px solid #e8edf3;text-align:left;}
+    .bktable th:last-child,.bktable td:last-child{text-align:right;padding-right:0;}
+    .bktable td{padding:10px 10px 10px 0;border-bottom:1px solid #f1f5f9;vertical-align:top;}
+    .bktable tbody tr:nth-child(even) td{background:#fafbfc;}
+    .td-cod{font-weight:700;color:#185FA5;}
+    .td-loc{color:#64748b;font-size:11px;margin-top:1px;}
+    .td-green{color:#0F6E56;font-weight:700;}
+    .td-green-sm{color:#3B6D11;font-size:11px;}
+    .tfoot-row td{padding-top:12px;border-top:2px solid #e8edf3;border-bottom:none;font-weight:700;}
+    .tfoot-muted td{color:#8892a4;padding-top:6px;border-bottom:none;}
+    .tfoot-final td{color:#185FA5;font-weight:700;font-size:15px;border-bottom:none;}
+    .empty-msg{font-size:13px;color:#8892a4;padding:8px 0;}
+    .pdf-btn{width:100%;padding:16px;background:#185FA5;color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s,transform .1s;margin-top:6px;}
+    .pdf-btn:hover{background:#1251a3;}
+    .pdf-btn:active{transform:scale(.98);}
+    .pdf-btn:disabled{background:#c8d0dc;cursor:not-allowed;transform:none;}
+    .pdf-btn svg{width:18px;height:18px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+    .pdf-hint{font-size:12px;color:#8892a4;text-align:center;margin-top:8px;padding-bottom:24px;}
+    mark{background:#FFF3CD;border-radius:2px;padding:0 1px;}
+    @media(max-width:540px){.screen-grid{grid-template-columns:1fr;}.client-grid{grid-template-columns:1fr;}.metrics{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg width="22" height="15" viewBox="0 0 28 20" fill="none">
+      <rect x="1" y="1" width="26" height="14" rx="2" fill="white" opacity=".9"/>
+      <circle cx="14" cy="8" r="3" fill="#0a0a1a" opacity=".7"/>
+    </svg>
+  </div>
+  <div>
+    <div class="topbar-brand">RENTAL VISION PUBLICIDAD</div>
+    <div class="topbar-sub">Calculadora de pauta</div>
+  </div>
+  <div class="topbar-year">Lista de precios 2026</div>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="sec-title">1 · Selecciona las pantallas</div>
+    <div class="circuit-banner" id="circuit-btn" onclick="toggleCircuit()">
+      <div class="cb-left">
+        <div class="cb-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#29b6f6" stroke-width="2" stroke-linecap="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            <circle cx="7" cy="10" r="1.5" fill="#29b6f6" stroke="none"/>
+            <circle cx="12" cy="10" r="1.5" fill="#29b6f6" stroke="none"/>
+            <circle cx="17" cy="10" r="1.5" fill="#29b6f6" stroke="none"/>
+          </svg>
+        </div>
+        <div><div class="cb-title">Circuito completo</div><div class="cb-sub" id="circuit-sub">Selecciona todas las 28 pantallas de una vez</div></div>
+      </div>
+      <div class="cb-badge off" id="circuit-badge">Activar circuito</div>
+    </div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+      <input class="search-input" id="search" type="text" placeholder="Buscar por código, ubicación, avenida, formato…" oninput="onSearch(this.value)">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="filter-row">
+      <span class="ftag active" onclick="filterFormat('ALL',this)">Todas</span>
+      <span class="ftag" onclick="filterFormat('GIGANTE',this)">Gigante</span>
+      <span class="ftag" onclick="filterFormat('VERTICAL',this)">Vertical</span>
+      <span class="ftag" onclick="filterFormat('VALLA LED',this)">Valla LED</span>
+      <span class="ftag" onclick="filterFormat('TIPO TOTEM',this)">Tótem</span>
+      <span class="ftag" onclick="filterFormat('PEATONAL',this)">Peatonal</span>
+    </div>
+    <div class="results-count" id="results-count"></div>
+    <div class="screen-grid" id="screen-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="sec-title">2 · Duración de la campaña</div>
+    <div class="days-wrap">
+      <span class="day-btn active" onclick="setDays(7,this)">7 días</span>
+      <span class="day-btn" onclick="setDays(15,this)">15 días</span>
+      <span class="day-btn" onclick="setDays(30,this)">30 días</span>
+      <span class="day-btn" onclick="setDays(45,this)">45 días</span>
+      <span class="day-btn" onclick="setDays(60,this)">60 días</span>
+      <span class="day-btn" onclick="setDays(90,this)">90 días</span>
+      <span class="day-btn" onclick="setDays(180,this)">180 días</span>
+      <span class="day-btn" onclick="setDays(365,this)">365 días</span>
+    </div>
+    <div class="custom-days">
+      <label>O ingresa días personalizados:</label>
+      <input type="number" id="custom-days-input" min="1" max="730" placeholder="Ej: 45" oninput="setCustomDays(this.value)">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-title">3 · Descuento comercial (opcional)</div>
+    <div class="disc-row">
+      <label>Descuento</label>
+      <input type="range" min="0" max="40" step="5" value="0" id="disc" oninput="setDisc(this.value)">
+      <span class="disc-val" id="disc-out">0%</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-title">4 · Datos del cliente (para la propuesta PDF)</div>
+    <div class="client-grid">
+      <div class="client-field"><label>Nombre del cliente / empresa</label><input type="text" id="client-name" placeholder="Ej: Empresa XYZ, S.A."></div>
+      <div class="client-field"><label>Nombre del vendedor</label><input type="text" id="seller-name" placeholder="Ej: Juan Pérez"></div>
+      <div class="client-field"><label>Teléfono / WhatsApp</label><input type="text" id="client-phone" placeholder="Ej: 809-000-0000"></div>
+      <div class="client-field"><label>Correo del cliente</label><input type="text" id="client-email" placeholder="Ej: cliente@empresa.com"></div>
+    </div>
+  </div>
+
+  <div class="result-main">
+    <div class="r-top">
+      <div><div class="r-label">Inversión total estimada</div><div class="r-val" id="r-total">RD$ 0</div></div>
+      <div style="text-align:right;"><div class="r-label">Con ITBIS (18%)</div><div class="r-val-sm" id="r-itbis">RD$ 0</div></div>
+    </div>
+    <div class="r-note" id="r-note">Selecciona pantallas para comenzar</div>
+  </div>
+
+  <div class="metrics">
+    <div class="met"><div class="met-label">Pantallas</div><div class="met-val" id="m-screens">0</div></div>
+    <div class="met"><div class="met-label">Impactos campaña</div><div class="met-val" id="m-impacts">—</div></div>
+    <div class="met"><div class="met-label">Costo diario total</div><div class="met-val" id="m-daily">RD$ 0</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sec-title">Desglose por pantalla</div>
+    <div id="breakdown"><div class="empty-msg">No hay pantallas seleccionadas.</div></div>
+  </div>
+
+  <button class="pdf-btn" id="pdf-btn" onclick="generatePDF()" disabled>
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    Generar propuesta en PDF
+  </button>
+  <div class="pdf-hint" id="pdf-hint">Selecciona al menos una pantalla para generar la propuesta</div>
+
+</div>
+
+<script>
+const SCREENS=[
+  {cod:'P001',format:'GIGANTE',loc:'Av. 27 Feb. esq. Lincoln (Unicentro 1)',side:'E-O/S-N',daily:10000,monthly:300000,traffic:2400000},
+  {cod:'P002',format:'VERTICAL',loc:'Av. 27 Feb. esq. Federico Geraldino (Unicentro 2)',side:'E-O',daily:4000,monthly:120000,traffic:500000},
+  {cod:'P003',format:'VERTICAL',loc:'Av. 27 Feb. esq. Federico Geraldino (Unicentro 2)',side:'O-E',daily:4000,monthly:120000,traffic:250000},
+  {cod:'P004',format:'TIPO TOTEM',loc:'Av. Winston Churchill, Acropolis Center',side:'S-N',daily:4000,monthly:120000,traffic:2550000},
+  {cod:'P005',format:'VALLA LED',loc:'Av. 27 Feb. esq. W. Churchill (Plaza Central)',side:'E-O',daily:4000,monthly:120000,traffic:580000},
+  {cod:'P006',format:'VALLA LED',loc:'Av. 27 Feb. esq. W. Churchill (Plaza Central)',side:'O-E',daily:4000,monthly:120000,traffic:250000},
+  {cod:'P007',format:'VALLA LED',loc:'Av. Tiradentes esq. Roberto Pastoriza',side:'S-N',daily:4000,monthly:120000,traffic:540000},
+  {cod:'P008',format:'VALLA LED',loc:'Av. Tiradentes esq. Roberto Pastoriza',side:'N-S',daily:4000,monthly:120000,traffic:550000},
+  {cod:'P009',format:'VALLA LED',loc:'Av. John F. Kennedy (Sambil Santo Domingo)',side:'O-E',daily:4000,monthly:120000,traffic:2400000},
+  {cod:'P010',format:'VALLA LED',loc:'Av. John F. Kennedy (Sambil Santo Domingo)',side:'E-O',daily:4000,monthly:120000,traffic:1900000},
+  {cod:'P011',format:'VALLA LED',loc:'Prol. Av. 27 Feb. esq. Isabel Aguiar',side:'E-O/S-N',daily:3000,monthly:90000,traffic:1350000},
+  {cod:'P012',format:'VALLA LED',loc:'Teatro Nac., Cesar N. Penson esq. Maximo Gomez',side:'E-O/S-N',daily:3000,monthly:90000,traffic:1200000},
+  {cod:'P013',format:'PEATONAL',loc:'Av. 27 Feb. esq. Maximo Gomez',side:'N-S',daily:2300,monthly:69000,traffic:900000},
+  {cod:'P014',format:'PEATONAL',loc:'Av. 27 Feb. esq. Maximo Gomez',side:'E-O',daily:2300,monthly:69000,traffic:1400000},
+  {cod:'P015',format:'PEATONAL',loc:'Av. 27 Feb. esq. Maximo Gomez',side:'O-E',daily:2300,monthly:69000,traffic:1000000},
+  {cod:'P016',format:'PEATONAL',loc:'Av. 27 Feb. esq. Maximo Gomez',side:'S-N',daily:2300,monthly:69000,traffic:1100000},
+  {cod:'P017',format:'PEATONAL',loc:'Av. John F. Kennedy esq. Maximo Gomez',side:'N-S',daily:2300,monthly:69000,traffic:1370000},
+  {cod:'P018',format:'PEATONAL',loc:'Av. John F. Kennedy esq. Maximo Gomez',side:'O-E',daily:2300,monthly:69000,traffic:1500000},
+  {cod:'P019',format:'PEATONAL',loc:'Av. John F. Kennedy esq. Maximo Gomez',side:'E-O',daily:2300,monthly:69000,traffic:1100000},
+  {cod:'P020',format:'PEATONAL',loc:'Av. John F. Kennedy esq. Maximo Gomez',side:'N-S',daily:2300,monthly:69000,traffic:1100000},
+  {cod:'P021',format:'PEATONAL',loc:'Av. Ortega & Gassette casi esq. J.F. Kennedy',side:'S-N',daily:2000,monthly:60000,traffic:1350000},
+  {cod:'P022',format:'PEATONAL',loc:'Av. Ortega & Gassette casi esq. J.F. Kennedy',side:'N-S',daily:2000,monthly:60000,traffic:1200000},
+  {cod:'P023',format:'PEATONAL',loc:'Aut. Las Americas, Entrada Sto. Domingo',side:'E-O',daily:2000,monthly:60000,traffic:3400000},
+  {cod:'P024',format:'PEATONAL',loc:'Aut. Las Americas, Salida Sto. Domingo',side:'O-E',daily:2000,monthly:60000,traffic:3300000},
+  {cod:'P025',format:'PEATONAL',loc:'Expreso 27 Feb. con Av. Ortega & Gassette',side:'O-E',daily:2000,monthly:60000,traffic:1000000},
+  {cod:'P026',format:'PEATONAL',loc:'Expreso 27 Feb. con Av. Ortega & Gassette',side:'E-O',daily:2000,monthly:60000,traffic:1400000},
+  {cod:'P027',format:'PEATONAL',loc:'Av. Defillo con Av. John F. Kennedy',side:'N-S',daily:2000,monthly:60000,traffic:700000},
+  {cod:'P028',format:'PEATONAL',loc:'Av. Hermanas Mirabal, Entrada Sto. Dgo. Norte',side:'S-N',daily:2000,monthly:60000,traffic:760000}
+];
+
+let selected=new Set(),circuitActive=false,days=7,discount=0,activeFormat='ALL',searchQuery='';
+
+function toggleCircuit(){
+  circuitActive=!circuitActive;
+  const btn=document.getElementById('circuit-btn'),badge=document.getElementById('circuit-badge'),sub=document.getElementById('circuit-sub');
+  if(circuitActive){SCREENS.forEach(s=>selected.add(s.cod));btn.classList.add('active');badge.classList.remove('off');badge.textContent='✓ Circuito activo';sub.textContent='Las 28 pantallas están seleccionadas';}
+  else{selected.clear();btn.classList.remove('active');badge.classList.add('off');badge.textContent='Activar circuito';sub.textContent='Selecciona todas las 28 pantallas de una vez';}
+  renderGrid();calc();
+}
+function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+escRe(q)+')','gi'),'<mark>$1</mark>');}
+function onSearch(v){searchQuery=v.trim();document.getElementById('search-clear').classList.toggle('vis',searchQuery.length>0);renderGrid();}
+function clearSearch(){document.getElementById('search').value='';searchQuery='';document.getElementById('search-clear').classList.remove('vis');renderGrid();}
+function filterFormat(f,el){activeFormat=f;document.querySelectorAll('.ftag').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderGrid();}
+function getFiltered(){
+  let list=activeFormat==='ALL'?SCREENS:SCREENS.filter(s=>s.format===activeFormat);
+  if(searchQuery){const q=searchQuery.toLowerCase();list=list.filter(s=>s.cod.toLowerCase().includes(q)||s.loc.toLowerCase().includes(q)||s.format.toLowerCase().includes(q)||s.side.toLowerCase().includes(q));}
+  return list;
+}
+function renderGrid(){
+  const g=document.getElementById('screen-grid'),list=getFiltered();
+  const total=activeFormat==='ALL'?SCREENS.length:SCREENS.filter(s=>s.format===activeFormat).length;
+  document.getElementById('results-count').innerHTML=(searchQuery||activeFormat!=='ALL')?'Mostrando <strong>'+list.length+'</strong> de <strong>'+total+'</strong> pantallas':'<strong>'+total+'</strong> pantallas disponibles';
+  if(!list.length){g.innerHTML='<div class="no-results">No se encontraron resultados para "'+searchQuery+'"</div>';return;}
+  g.innerHTML='';
+  list.forEach(s=>{
+    const isSel=selected.has(s.cod),d=document.createElement('div');
+    d.className='screen-item'+(circuitActive&&isSel?' circuit-sel':isSel?' sel':'');
+    d.innerHTML='<div class="chk"></div><div class="s-info"><div class="s-top"><span class="s-cod">'+hl(s.cod,searchQuery)+'</span><span class="s-badge">'+hl(s.format,searchQuery)+'</span></div><div class="s-name">'+hl(s.loc,searchQuery)+'</div><div class="s-side">Sentido: '+s.side+'</div><div class="s-traffic">~'+s.traffic.toLocaleString('es-DO')+' veh/mes</div><div class="s-price">RD$ '+s.daily.toLocaleString('es-DO')+'/día · RD$ '+s.monthly.toLocaleString('es-DO')+'/mes</div></div>';
+    d.onclick=()=>{
+      if(circuitActive){circuitActive=false;selected.clear();document.getElementById('circuit-btn').classList.remove('active');document.getElementById('circuit-badge').classList.add('off');document.getElementById('circuit-badge').textContent='Activar circuito';document.getElementById('circuit-sub').textContent='Selecciona todas las 28 pantallas de una vez';}
+      selected.has(s.cod)?selected.delete(s.cod):selected.add(s.cod);renderGrid();calc();
+    };
+    g.appendChild(d);
+  });
+}
+function setDays(d,el){days=d;document.getElementById('custom-days-input').value='';document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));el.classList.add('active');calc();}
+function setCustomDays(v){const n=parseInt(v);if(!n||n<1)return;days=n;document.querySelectorAll('.day-btn').forEach(x=>x.classList.remove('active'));calc();}
+function setDisc(v){discount=parseInt(v);document.getElementById('disc-out').textContent=v+'%';calc();}
+function fmt(n){return 'RD$ '+Math.round(n).toLocaleString('es-DO');}
+function fmtN(n){return Math.round(n).toLocaleString('es-DO');}
+
+function calc(){
+  const sel=SCREENS.filter(s=>selected.has(s.cod));
+  const dailyTotal=sel.reduce((a,s)=>a+s.daily,0);
+  const net=dailyTotal*days*(1-discount/100),itbis=net*0.18,totalTax=net+itbis;
+  const totalTraffic=sel.reduce((a,s)=>a+Math.round(s.traffic/30*days),0);
+  document.getElementById('r-total').textContent=fmt(net);
+  document.getElementById('r-itbis').textContent=fmt(totalTax);
+  document.getElementById('m-screens').textContent=sel.length;
+  document.getElementById('m-impacts').textContent=sel.length?fmtN(totalTraffic):'—';
+  document.getElementById('m-daily').textContent=fmt(dailyTotal);
+  document.getElementById('r-note').textContent=sel.length?sel.length+' pantalla'+(sel.length>1?'s':'')+' · '+days+' días · '+(discount>0?'Descuento '+discount+'% aplicado':'Sin descuento')+(circuitActive?' · Circuito completo':''):'Selecciona pantallas para comenzar';
+  document.getElementById('pdf-btn').disabled=!sel.length;
+  document.getElementById('pdf-hint').textContent=sel.length?'El PDF se abrirá listo para guardar y enviar por correo o WhatsApp':'Selecciona al menos una pantalla para generar la propuesta';
+  const bd=document.getElementById('breakdown');
+  if(!sel.length){bd.innerHTML='<div class="empty-msg">No hay pantallas seleccionadas.</div>';return;}
+  let rows=sel.map(s=>{
+    const imp=Math.round(s.traffic/30*days),line=s.daily*days*(1-discount/100),loc=s.loc.length>40?s.loc.slice(0,40)+'…':s.loc;
+    return '<tr><td><div class="td-cod">'+s.cod+'</div><div class="td-loc">'+loc+' · '+s.side+'</div></td><td><div class="td-green">'+fmtN(imp)+'</div><div class="td-green-sm">'+fmtN(s.traffic)+'/mes</div></td><td>RD$ '+s.daily.toLocaleString('es-DO')+'</td><td style="text-align:right;font-weight:700;">'+fmt(line)+'</td></tr>';
+  }).join('');
+  bd.innerHTML='<table class="bktable"><thead><tr><th>Pantalla</th><th>Impactos campaña</th><th>Precio/día</th><th style="text-align:right;">Subtotal</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr class="tfoot-row"><td colspan="3">Total sin ITBIS</td><td>'+fmt(net)+'</td></tr><tr class="tfoot-muted"><td colspan="3">ITBIS 18%</td><td>'+fmt(itbis)+'</td></tr><tr class="tfoot-final"><td colspan="3">Total con ITBIS</td><td>'+fmt(totalTax)+'</td></tr></tfoot></table>';
+}
+
+function generatePDF(){
+  const sel=SCREENS.filter(s=>selected.has(s.cod));
+  if(!sel.length)return;
+  const clientName=document.getElementById('client-name').value||'Cliente';
+  const sellerName=document.getElementById('seller-name').value||'—';
+  const clientPhone=document.getElementById('client-phone').value||'';
+  const clientEmail=document.getElementById('client-email').value||'';
+  const dailyTotal=sel.reduce((a,s)=>a+s.daily,0);
+  const net=dailyTotal*days*(1-discount/100),itbis=net*0.18,totalTax=net+itbis;
+  const totalTraffic=sel.reduce((a,s)=>a+Math.round(s.traffic/30*days),0);
+  const today=new Date().toLocaleDateString('es-DO',{day:'2-digit',month:'long',year:'numeric'});
+  const tableRows=sel.map(s=>{
+    const imp=Math.round(s.traffic/30*days),line=s.daily*days*(1-discount/100);
+    return '<tr><td style="padding:8px 10px;border-bottom:1px solid #eee;"><strong style="color:#185FA5;">'+s.cod+'</strong><br><span style="font-size:11px;color:#666;">'+s.loc+' · '+s.side+'</span></td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:center;"><span style="color:#0F6E56;font-weight:600;">'+fmtN(imp)+'</span><br><span style="font-size:11px;color:#888;">'+fmtN(s.traffic)+'/mes</span></td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:center;">'+s.format+'</td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right;">RD$ '+s.daily.toLocaleString('es-DO')+'</td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:600;">RD$ '+Math.round(line).toLocaleString('es-DO')+'</td></tr>';
+  }).join('');
+  const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Propuesta Rental Vision - '+clientName+'</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,Helvetica,sans-serif;color:#1a1a2e;background:#fff;font-size:13px;}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}.page{max-width:900px;margin:0 auto;}.header{background:#0a0a1a;color:white;padding:28px 36px;display:flex;justify-content:space-between;align-items:center;}.company-name{font-size:20px;font-weight:700;}.company-sub{font-size:11px;color:#90caf9;margin-top:2px;}.prop-label{font-size:10px;color:#4fc3f7;text-transform:uppercase;letter-spacing:.1em;}.prop-date{font-size:12px;color:#cce5ff;margin-top:4px;}.client-bar{background:#f0f5ff;border-left:4px solid #185FA5;padding:16px 36px;display:flex;justify-content:space-between;align-items:center;}.client-name{font-size:17px;font-weight:700;}.client-info{font-size:12px;color:#555;margin-top:3px;}.seller-info{text-align:right;font-size:12px;color:#555;}.seller-info strong{color:#0a0a1a;display:block;font-size:13px;}.metrics-row{display:flex;border-bottom:2px solid #eee;}.metric-box{flex:1;padding:14px 20px;border-right:1px solid #eee;text-align:center;}.metric-box:last-child{border-right:none;}.metric-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}.metric-val{font-size:18px;font-weight:700;}.section-title{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;padding:14px 36px 8px;}table.main{width:100%;border-collapse:collapse;}table.main thead tr{background:#0a0a1a;}table.main thead th{color:white;font-size:10px;font-weight:600;text-transform:uppercase;padding:10px;text-align:left;}table.main tbody tr:nth-child(even){background:#f8fafc;}.totals{padding:16px 36px;display:flex;justify-content:flex-end;}.totals-box{min-width:280px;}.total-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;font-size:13px;}.total-row.final{background:#0a0a1a;color:white;padding:10px 12px;border-radius:6px;margin-top:6px;font-size:15px;font-weight:700;border:none;}.total-row.final span:last-child{color:#29b6f6;}.note-box{margin:0 36px 20px;background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:12px 16px;font-size:11px;color:#92400e;}.footer{background:#0a0a1a;color:#90caf9;padding:14px 36px;display:flex;justify-content:space-between;font-size:11px;}</style></head><body><div class="page"><div class="header"><div><div class="company-name">RENTAL VISION PUBLICIDAD</div><div class="company-sub">Publicidad exterior digital — Santo Domingo, Republica Dominicana</div></div><div style="text-align:right;"><div class="prop-label">Propuesta Comercial</div><div class="prop-date">'+today+'</div></div></div><div class="client-bar"><div><div style="font-size:10px;color:#185FA5;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Preparado para</div><div class="client-name">'+clientName+'</div><div class="client-info">'+[clientEmail,clientPhone].filter(Boolean).join('  ·  ')+'</div></div><div class="seller-info"><strong>'+sellerName+'</strong>Ejecutivo de Ventas — Rental Vision</div></div><div class="metrics-row"><div class="metric-box"><div class="metric-label">Pantallas</div><div class="metric-val">'+sel.length+'</div></div><div class="metric-box"><div class="metric-label">Duracion</div><div class="metric-val">'+days+' dias</div></div><div class="metric-box"><div class="metric-label">Impactos estimados</div><div class="metric-val">'+fmtN(totalTraffic)+'</div></div><div class="metric-box"><div class="metric-label">Descuento</div><div class="metric-val">'+discount+'%</div></div><div class="metric-box"><div class="metric-label">Total sin ITBIS</div><div class="metric-val" style="color:#185FA5;font-size:15px;">'+fmt(net)+'</div></div></div><div class="section-title">Detalle de pantallas</div><table class="main"><thead><tr><th>Pantalla / Ubicacion</th><th style="text-align:center;">Impactos campaña</th><th style="text-align:center;">Formato</th><th style="text-align:right;">Precio/dia</th><th style="text-align:right;">Subtotal</th></tr></thead><tbody>'+tableRows+'</tbody></table><div class="totals"><div class="totals-box"><div class="total-row"><span>Subtotal sin ITBIS</span><span>'+fmt(net)+'</span></div><div class="total-row" style="color:#888;"><span>ITBIS 18%</span><span>'+fmt(itbis)+'</span></div><div class="total-row final"><span>TOTAL CON ITBIS</span><span>'+fmt(totalTax)+'</span></div></div></div><div class="note-box"><strong>Nota:</strong> Precios en pesos dominicanos (RD$). Sujeto a disponibilidad al momento de la contratacion. Precios de lista 2026.</div><div class="footer"><span>Rental Vision Publicidad 2026</span><span>Generado el '+today+' · Vendedor: '+sellerName+'</span></div></div><script>window.onload=function(){window.print();}<\/script></body></html>';
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const win=window.open(url,'_blank');
+  if(!win){alert('Permite ventanas emergentes en tu navegador para generar el PDF.');}
+  else{setTimeout(()=>URL.revokeObjectURL(url),60000);}
+}
+
+renderGrid();calc();
+</script>
+</body>
+</html>
