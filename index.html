@@ -7,32 +7,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #07071a;
-      --surface: #0e0e22;
-      --surface2: #14142a;
+      --bg: #080808;
+      --surface: #111111;
+      --surface2: #1a1a1a;
       --border: rgba(255,255,255,.08);
-      --accent: #29b6f6;
-      --gold: #f59e0b;
-      --green: #10b981;
-      --red: #ef4444;
-      --text: #f0f0ff;
-      --muted: rgba(240,240,255,.4);
+      --accent: #1a9e3f;
+      --accent2: #e31e24;
+      --gold: #e31e24;
+      --green: #1a9e3f;
+      --red: #e31e24;
+      --text: #ffffff;
+      --muted: rgba(255,255,255,.45);
       --fd: 'Playfair Display', Georgia, serif;
       --fb: 'Outfit', system-ui, sans-serif;
     }
     body.light {
-      --bg: #f5f6fa;
+      --bg: #f5f5f5;
       --surface: #ffffff;
-      --surface2: #eef0f6;
+      --surface2: #f0f0f0;
       --border: rgba(0,0,0,.08);
-      --text: #0f0f1a;
-      --muted: rgba(15,15,26,.45);
-      --accent: #0288d1;
-      --gold: #d97706;
-      --green: #059669;
+      --text: #111111;
+      --muted: rgba(0,0,0,.45);
+      --accent: #1a9e3f;
+      --accent2: #e31e24;
+      --gold: #e31e24;
+      --green: #1a9e3f;
     }
     body.light::before { background-image:linear-gradient(rgba(2,136,209,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(2,136,209,.04) 1px,transparent 1px); }
-    body.light .hero h1 { background:linear-gradient(135deg,#0f0f1a 40%,rgba(2,136,209,.8)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    body.light .hero h1 { background:linear-gradient(135deg,#111111 40%,rgba(26,158,63,.8)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     body.light .ramt { color: var(--text); }
     body.light .sc { background: #f8f9fd; }
     body.light .sc:hover { background: #eef4fb; }
@@ -40,7 +42,7 @@
     body.light .sc.circuit-sel { background: #ddeefb; }
     body.light .circuit { background: rgba(2,136,209,.05); border-color: rgba(2,136,209,.15); }
     body.light .circuit.on { background: rgba(2,136,209,.1); border-color: rgba(2,136,209,.4); }
-    body.light .result-card::after { background: radial-gradient(circle,rgba(2,136,209,.08),transparent 70%); }
+    body.light .result-card::after { background: radial-gradient(circle,rgba(26,158,63,.08),transparent 70%); }
     body.light #hero-logo { filter: invert(1); }
 
     /* THEME SWITCH */
@@ -79,7 +81,7 @@
     .hero { text-align:center; padding:40px 20px 24px; position:relative; z-index:1; }
     .eyebrow { font-family:var(--fb); font-size:10px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:8px; }
     .eyebrow::before,.eyebrow::after { content:''; width:32px; height:1px; background:rgba(41,182,246,.3); }
-    .hero h1 { font-family:var(--fd); font-size:clamp(26px,4vw,46px); font-weight:600; line-height:1.15; margin-bottom:10px; background:linear-gradient(135deg,#fff 40%,rgba(41,182,246,.7)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero h1 { font-family:var(--fd); font-size:clamp(26px,4vw,46px); font-weight:600; line-height:1.15; margin-bottom:10px; background:linear-gradient(135deg,#ffffff 40%,rgba(26,158,63,.8)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     .hero p { font-size:14px; color:var(--muted); max-width:460px; margin:0 auto; line-height:1.7; }
 
     /* LAYOUT */
@@ -173,7 +175,7 @@
     /* RESULT PANEL */
     .sticky-r { position:sticky; top:20px; }
     .result-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:12px; position:relative; overflow:hidden; }
-    .result-card::after { content:''; position:absolute; top:-40px; right:-40px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,rgba(41,182,246,.1),transparent 70%); pointer-events:none; }
+    .result-card::after { content:''; position:absolute; top:-40px; right:-40px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,rgba(26,158,63,.1),transparent 70%); pointer-events:none; }
     .rl { font-size:10px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
     .ramt { font-family:var(--fd); font-size:36px; font-weight:600; color:var(--text); line-height:1; }
     .ramt .cur { font-size:15px; color:var(--muted); vertical-align:super; }
@@ -205,7 +207,7 @@
     .empty-bk { font-size:12px; color:var(--muted); text-align:center; padding:16px 0; }
 
     /* BTN */
-    .gen-btn { width:100%; padding:15px; border-radius:12px; border:none; background:linear-gradient(135deg,var(--accent),#0ea5e9); color:#000; font-family:var(--fd); font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .gen-btn { width:100%; padding:15px; border-radius:12px; border:none; background:linear-gradient(135deg,#1a9e3f,#157a31); color:#000; font-family:var(--fd); font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
     .gen-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 8px 24px rgba(41,182,246,.25); }
     .gen-btn:disabled { background:var(--surface2); color:rgba(255,255,255,.2); cursor:not-allowed; transform:none; }
     .gen-btn svg { width:16px; height:16px; flex-shrink:0; }
@@ -441,10 +443,11 @@ var SCREENS = [
 ];
 
 var selected = new Set();
+var screenFreq = {};  // cod -> 1.0 (full) o 0.5 (media)
 var circuitOn = false;
 var days = 30;
 var discount = 0;
-var freqMultiplier = 1.0;
+var freqMultiplier = 1.0; // global (para circuito completo)
 var activeFmt = 'ALL';
 var sq = '';
 
@@ -473,13 +476,14 @@ function toggleCircuit() {
   var badge = document.getElementById('circuit-badge');
   var sub = document.getElementById('circuit-sub');
   if (circuitOn) {
-    SCREENS.forEach(function(s){ selected.add(s.cod); });
+    SCREENS.forEach(function(s){ selected.add(s.cod); screenFreq[s.cod] = freqMultiplier; });
     el.classList.add('on');
     badge.classList.remove('off');
     badge.textContent = '✓ Activo';
     sub.textContent = 'Las 28 pantallas están seleccionadas';
   } else {
     selected.clear();
+    screenFreq = {};
     el.classList.remove('on');
     badge.classList.add('off');
     badge.textContent = 'Activar';
@@ -527,10 +531,21 @@ function setFreq(f, el) {
   document.getElementById('freq-full').classList.remove('active');
   document.getElementById('freq-half').classList.remove('active');
   if (el) el.classList.add('active');
+  // Actualizar todas las pantallas seleccionadas con la frecuencia global
+  selected.forEach(function(cod) { screenFreq[cod] = freqMultiplier; });
   var hint = document.getElementById('freq-hint');
   if (hint) hint.textContent = f === 'full'
     ? 'Precio completo · 100% del tiempo disponible'
     : '50% del precio · Ideal para optimizar presupuesto';
+  renderScreens();
+  calc();
+}
+
+function toggleScreenFreq(cod, btn) {
+  // Alternar frecuencia individual de una pantalla
+  var current = screenFreq[cod] || 1.0;
+  screenFreq[cod] = (current === 1.0) ? 0.5 : 1.0;
+  renderScreens();
   calc();
 }
 
@@ -563,6 +578,9 @@ function renderScreens() {
     var isCirc = circuitOn && isSel;
     var card = document.createElement('div');
     card.className = 'sc' + (isCirc ? ' circuit-sel' : isSel ? ' sel' : '');
+    var freq = screenFreq[s.cod] || 1.0;
+    var isHalf = freq === 0.5;
+    var priceToShow = isSel ? Math.round(s.daily * freq) : s.daily;
     card.innerHTML =
       '<div class="sc-chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>'+
       '<div class="sc-info">'+
@@ -570,7 +588,12 @@ function renderScreens() {
         '<div class="sc-loc">'+hl(s.loc,sq)+'</div>'+
         '<div class="sc-meta">'+
           '<span class="sc-traffic">~'+s.traffic.toLocaleString('es-DO')+' veh/mes</span>'+
-          '<span class="sc-price">RD$ '+s.daily.toLocaleString('es-DO')+'/día · RD$ '+s.monthly.toLocaleString('es-DO')+'/mes</span>'+
+          '<span class="sc-price">RD$ '+priceToShow.toLocaleString('es-DO')+'/día</span>'+
+          (isSel ?
+            '<span class="sc-freq-toggle '+(isHalf?'sc-freq-half':'sc-freq-full')+'" onclick="event.stopPropagation();toggleScreenFreq(''+s.cod+'',this)">'+
+              (isHalf ? '◑ Media' : '⚡ Full')+
+            '</span>'
+          : '') +
         '</div>'+
       '</div>';
     card.addEventListener('click', function() {
@@ -581,8 +604,13 @@ function renderScreens() {
         document.getElementById('circuit-badge').textContent = 'Activar';
         document.getElementById('circuit-sub').textContent = 'Selecciona las 28 pantallas de una vez';
       }
-      if (selected.has(s.cod)) selected.delete(s.cod);
-      else selected.add(s.cod);
+      if (selected.has(s.cod)) {
+        selected.delete(s.cod);
+        delete screenFreq[s.cod];
+      } else {
+        selected.add(s.cod);
+        screenFreq[s.cod] = 1.0; // full por defecto
+      }
       renderScreens();
       calc();
     });
@@ -595,8 +623,11 @@ function fmtN(n){ return Math.round(n).toLocaleString('es-DO'); }
 
 function calc() {
   var sel = SCREENS.filter(function(s){ return selected.has(s.cod); });
-  var dailyTotal = sel.reduce(function(a,s){ return a+s.daily; }, 0);
-  var gross = dailyTotal * days * freqMultiplier;
+  var dailyTotal = sel.reduce(function(a,s){
+    var f = screenFreq[s.cod] !== undefined ? screenFreq[s.cod] : freqMultiplier;
+    return a + Math.round(s.daily * f);
+  }, 0);
+  var gross = dailyTotal * days;
   var net = gross * (1 - discount/100);
   var itbis = net * 0.18;
   var totalTax = net + itbis;
@@ -639,7 +670,8 @@ function calc() {
   } else {
     bodyRows = sel.map(function(s) {
       var imp = Math.round(s.traffic/30*days);
-      var line = s.daily * days * freqMultiplier * (1 - discount/100);
+      var f = screenFreq[s.cod] !== undefined ? screenFreq[s.cod] : freqMultiplier;
+      var line = Math.round(s.daily * f) * days * (1 - discount/100);
       var loc = s.loc.length > 38 ? s.loc.slice(0,38)+'…' : s.loc;
       return '<tr>'+
         '<td><div class="bk-cod">'+s.cod+'</div><div class="bk-loc">'+loc+' · '+s.side+'</div></td>'+
@@ -671,8 +703,11 @@ function doPDF() {
   var sn = document.getElementById('sname').value || 'Rental Vision';
   var cp = document.getElementById('cphone').value || '';
   var ce = document.getElementById('cemail').value || '';
-  var dailyTotal = sel.reduce(function(a,s){ return a+s.daily; }, 0);
-  var gross = dailyTotal * days * freqMultiplier;
+  var dailyTotal = sel.reduce(function(a,s){
+    var f = screenFreq[s.cod] !== undefined ? screenFreq[s.cod] : freqMultiplier;
+    return a + Math.round(s.daily * f);
+  }, 0);
+  var gross = dailyTotal * days;
   var net = gross * (1 - discount/100);
   var itbis = net*0.18, total = net+itbis;
   var imp = Math.round(sel.reduce(function(a,s){ return a+(s.traffic/30*days); }, 0));
@@ -683,26 +718,27 @@ function doPDF() {
   // Colores según tema
   var dark = isDark;
   var C = {
-    pageBg:   dark ? '#060610'  : '#ffffff',
-    bodyColor:dark ? '#f0f0ff'  : '#0f0f1a',
-    hdrBg:    dark ? '#0a0a1a'  : '#f0f4fa',
-    hdrBorder:dark ? '#1a1a30'  : '#d0d8e8',
-    accentLine:dark? '#29b6f6'  : '#0288d1',
-    accent:   dark ? '#29b6f6'  : '#0288d1',
-    cbarBg:   dark ? '#0e0e20'  : '#e8f0fa',
-    subtleBg: dark ? '#0a0f1e'  : '#f0f4fb',
-    rowEven:  dark ? '#08081a'  : '#f7f9fd',
-    totalBg:  dark ? '#29b6f6'  : '#0288d1',
-    totalColor:dark? '#000000'  : '#ffffff',
-    cellBorder:dark? '#1a1a30'  : '#e0e6f0',
-    muted:    dark ? '#555555'  : '#888888',
-    textMain: dark ? '#f0f0ff'  : '#0f0f1a',
-    noteBorder:dark? '#f59e0b'  : '#d97706',
-    noteText: dark ? '#555555'  : '#666666',
-    footBg:   dark ? '#0a0a1a'  : '#f0f4fa',
-    footColor:dark ? '#333333'  : '#888888',
-    green:    dark ? '#10b981'  : '#059669',
-    gold:     dark ? '#f59e0b'  : '#d97706'
+    pageBg:    dark ? '#080808'  : '#f5f5f5',
+    bodyColor: dark ? '#ffffff'  : '#111111',
+    hdrBg:     dark ? '#111111'  : '#ffffff',
+    hdrBorder: dark ? '#2a2a2a'  : '#e0e0e0',
+    accentLine: '#1a9e3f',
+    accent:     '#1a9e3f',
+    accentRed:  '#e31e24',
+    cbarBg:    dark ? '#1a1a1a'  : '#f0f0f0',
+    subtleBg:  dark ? '#141414'  : '#f8f8f8',
+    rowEven:   dark ? '#0d0d0d'  : '#fafafa',
+    totalBg:    '#1a9e3f',
+    totalColor: '#ffffff',
+    cellBorder: dark ? '#2a2a2a'  : '#e0e0e0',
+    muted:     dark ? '#888888'  : '#888888',
+    textMain:  dark ? '#ffffff'  : '#111111',
+    noteBorder: '#1a9e3f',
+    noteText:  dark ? '#888888'  : '#666666',
+    footBg:    dark ? '#111111'  : '#ffffff',
+    footColor: dark ? '#555555'  : '#999999',
+    green:      '#1a9e3f',
+    gold:       '#e31e24'
   };
 
   var rows = '';
@@ -736,9 +772,9 @@ function doPDF() {
     'body{background:'+C.pageBg+';color:'+C.bodyColor+';font-family:"Outfit",sans-serif;font-size:13px;}'+
     '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}'+
     '.page{max-width:960px;margin:0 auto;}'+
-    '.hdr{background:'+C.hdrBg+';border-bottom:1px solid '+C.hdrBorder+';padding:22px 36px;display:flex;justify-content:space-between;align-items:center;}'+
+    '.hdr{background:'+C.hdrBg+';border-bottom:3px solid '+C.accentLine+';padding:22px 36px;display:flex;justify-content:space-between;align-items:center;}'+
     '.hdr img{height:44px;}'+
-    '.ptag{font-family:"Playfair Display",serif;font-size:11px;font-weight:600;color:'+C.accent+';}'+
+    '.ptag{font-family:"Playfair Display",serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:'+C.accent+';}'+
     '.pdate{font-size:12px;color:'+C.muted+';margin-top:3px;}'+
     '.cbar{background:'+C.cbarBg+';border-bottom:3px solid '+C.accentLine+';padding:18px 36px;display:flex;justify-content:space-between;align-items:center;}'+
     '.cn2{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:'+C.textMain+';}'+
@@ -749,7 +785,7 @@ function doPDF() {
     '.ci3 .l{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:'+C.muted+';margin-bottom:2px;}'+
     '.ci3 .v{font-family:"Playfair Display",serif;font-size:14px;font-weight:600;color:'+C.textMain+';}'+
     '.mets{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid '+C.hdrBorder+';}'+
-    '.met{padding:14px;border-right:1px solid '+C.hdrBorder+';text-align:center;background:'+C.pageBg+';}'+
+    '.met{padding:16px;border-right:1px solid '+C.hdrBorder+';text-align:center;background:'+C.subtleBg+';}'+
     '.met:last-child{border-right:none;}'+
     '.ml{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:'+C.muted+';margin-bottom:5px;}'+
     '.mv{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;}'+
@@ -762,8 +798,8 @@ function doPDF() {
     '.tb{min-width:280px;}'+
     '.tr2{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid '+C.hdrBorder+';font-size:13px;color:'+C.muted+';}'+
     '.tf{display:flex;justify-content:space-between;padding:11px 14px;background:'+C.totalBg+';border-radius:8px;margin-top:8px;font-family:"Playfair Display",serif;font-size:15px;font-weight:700;color:'+C.totalColor+';}'+
-    '.note{margin:0 36px 18px;background:'+C.hdrBg+';border-left:3px solid '+C.noteBorder+';border-radius:0 6px 6px 0;padding:10px 14px;font-size:11px;color:'+C.noteText+';}'+
-    '.foot{background:'+C.footBg+';border-top:1px solid '+C.hdrBorder+';padding:12px 36px;display:flex;justify-content:space-between;font-size:11px;color:'+C.footColor+';}'+
+    '.note{margin:0 36px 18px;background:'+C.subtleBg+';border-left:4px solid '+C.noteBorder+';border-radius:0 8px 8px 0;padding:12px 16px;font-size:11px;color:'+C.noteText+';}'+
+    '.foot{background:'+C.footBg+';border-top:3px solid '+C.accentLine+';padding:14px 36px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:'+C.footColor+';}'+
     '</style></head><body>'+
     '<div class="page">'+
     '<div class="hdr"><img src="'+LOGO+'" alt="Rental Vision"><div style="text-align:right;"><div class="ptag">Propuesta Comercial</div><div class="pdate">'+today+'</div></div></div>'+
@@ -790,7 +826,7 @@ function doPDF() {
       '<div class="tf"><span>TOTAL CON ITBIS</span><span>'+fmt(total)+'</span></div>'+
     '</div></div>'+
     '<div class="note"><strong style="color:'+C.noteBorder+';">Nota:</strong> Precios en RD$. Sujeto a disponibilidad. Lista de precios 2026.</div>'+
-    '<div class="foot"><span>Rental Vision Publicidad © 2026</span><span>Generado el '+today+' · '+sn+'</span></div>'+
+    '<div class="foot"><span style="font-family:Playfair Display,serif;font-weight:700;color:'+C.accent+';">Rental Vision Publicidad</span><span style="color:'+C.footColor+';">Generado el '+today+' · '+sn+'</span></div>'+
     '</div><script>window.onload=function(){window.print();};<\/script></body></html>';
 
   var blob = new Blob([h],{type:'text/html'});
