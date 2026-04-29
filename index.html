@@ -541,12 +541,28 @@ function setFreq(f, el) {
   calc();
 }
 
-function toggleScreenFreq(cod, btn) {
-  // Alternar frecuencia individual de una pantalla
+function handleFreqClick(el) {
+  // Extraer cod del id "freq-P001" -> "P001"
+  var cod = el.id.replace('freq-', '');
   var current = screenFreq[cod] || 1.0;
   screenFreq[cod] = (current === 1.0) ? 0.5 : 1.0;
   renderScreens();
   calc();
+}
+
+function toggleScreenFreq(cod, btn) {
+  var current = screenFreq[cod] || 1.0;
+  screenFreq[cod] = (current === 1.0) ? 0.5 : 1.0;
+  renderScreens();
+  calc();
+}
+
+function setScreenFreq(cod, freq) {
+  if (selected.has(cod)) {
+    selected.set(cod, freq);
+    renderScreens();
+    calc();
+  }
 }
 
 function escR(s){
@@ -590,7 +606,7 @@ function renderScreens() {
           '<span class="sc-traffic">~'+s.traffic.toLocaleString('es-DO')+' veh/mes</span>'+
           '<span class="sc-price">RD$ '+priceToShow.toLocaleString('es-DO')+'/día</span>'+
           (isSel ?
-            '<span class="sc-freq-toggle '+(isHalf?'sc-freq-half':'sc-freq-full')+'" onclick="event.stopPropagation();toggleScreenFreq(''+s.cod+'',this)">'+
+            '<span class="sc-freq-toggle '+(isHalf?'sc-freq-half':'sc-freq-full')+'" id="freq-'+s.cod+'" onclick="event.stopPropagation();handleFreqClick(this)">'+
               (isHalf ? '◑ Media' : '⚡ Full')+
             '</span>'
           : '') +
