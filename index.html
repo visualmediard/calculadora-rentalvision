@@ -334,8 +334,8 @@
       </div>
       <div class="pb">
         <div class="days-wrap" style="justify-content:center;">
-          <button class="day-btn active" id="freq-full" onclick="setFreq('full',this)">⚡ Full frecuencia</button>
-          <button class="day-btn" id="freq-half" onclick="setFreq('half',this)">◑ Media frecuencia</button>
+          <button class="day-btn active" id="freq-full" onclick="setFreq('full',this)">⚡ Full · 500 rep/día</button>
+          <button class="day-btn" id="freq-half" onclick="setFreq('half',this)">◑ Media · 250 rep/día</button>
         </div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="freq-hint">Precio completo · 100% del tiempo disponible</div>
       </div>
@@ -443,7 +443,10 @@ var SCREENS = [
 ];
 
 var selected = new Set();
-var screenFreq = {};  // cod -> 1.0 (full) o 0.5 (media)
+var screenFreq  = {};  // cod -> 1.0 | 0.5
+var screenDays  = {};  // cod -> dias individuales (null = usa global)
+var screenStart = {};  // cod -> fecha inicio YYYY-MM-DD
+var screenEnd   = {};  // cod -> fecha fin YYYY-MM-DD
 var circuitOn = false;
 var days = 30;
 var discount = 0;
@@ -535,9 +538,29 @@ function setFreq(f, el) {
   selected.forEach(function(cod) { screenFreq[cod] = freqMultiplier; });
   var hint = document.getElementById('freq-hint');
   if (hint) hint.textContent = f === 'full'
-    ? 'Precio completo · 100% del tiempo disponible'
-    : '50% del precio · Ideal para optimizar presupuesto';
+    ? 'Full frecuencia · 500 repeticiones por día · Precio completo'
+    : 'Media frecuencia · 250 repeticiones por día · 50% del precio';
   renderScreens();
+  calc();
+}
+
+function handleDateChange(el) {
+  var cod = el.getAttribute('data-cod');
+  var type = el.getAttribute('data-type');
+  if (type === 'start') {
+    screenStart[cod] = el.value;
+  } else {
+    screenEnd[cod] = el.value;
+  }
+  var s = screenStart[cod], e = screenEnd[cod];
+  if (s && e) {
+    var diff = Math.round((new Date(e) - new Date(s)) / (1000*60*60*24));
+    if (diff > 0) {
+      screenDays[cod] = diff;
+      var badge = document.getElementById('badge-'+cod);
+      if (badge) badge.textContent = diff+' días';
+    }
+  }
   calc();
 }
 
@@ -597,9 +620,14 @@ function renderScreens() {
     var freq = screenFreq[s.cod] || 1.0;
     var isHalf = freq === 0.5;
     var priceToShow = isSel ? Math.round(s.daily * freq) : s.daily;
+    var scDays = screenDays[s.cod] || days;
+    var scStart = screenStart[s.cod] || '';
+    var scEnd = screenEnd[s.cod] || '';
+    var scSubtotal = Math.round(s.daily * freq * scDays * (1 - discount/100));
+
     card.innerHTML =
       '<div class="sc-chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>'+
-      '<div class="sc-info">'+
+      '<div class="sc-info" style="width:100%">'+
         '<div class="sc-top-row"><span class="sc-cod">'+hl(s.cod,sq)+'</span><span class="sc-fmt">'+hl(s.fmt,sq)+'</span><span class="sc-side">'+s.side+'</span></div>'+
         '<div class="sc-loc">'+hl(s.loc,sq)+'</div>'+
         '<div class="sc-meta">'+
@@ -607,10 +635,20 @@ function renderScreens() {
           '<span class="sc-price">RD$ '+priceToShow.toLocaleString('es-DO')+'/día</span>'+
           (isSel ?
             '<span class="sc-freq-toggle '+(isHalf?'sc-freq-half':'sc-freq-full')+'" id="freq-'+s.cod+'" onclick="event.stopPropagation();handleFreqClick(this)">'+
-              (isHalf ? '◑ Media' : '⚡ Full')+
+              (isHalf ? '◑ 250 rep/día' : '⚡ 500 rep/día')+
             '</span>'
           : '') +
         '</div>'+
+        (isSel ?
+          '<div class="sc-dates-row" onclick="event.stopPropagation()">'+
+            '<label>Inicio</label>'+
+            '<input type="date" value="'+scStart+'" class="sc-date-input" data-cod="'+s.cod+'" data-type="start" onchange="handleDateChange(this)">'+
+            '<label>Fin</label>'+
+            '<input type="date" value="'+scEnd+'" class="sc-date-input" data-cod="'+s.cod+'" data-type="end" onchange="handleDateChange(this)">'+
+            '<span class="sc-days-badge" id="badge-'+s.cod+'">'+scDays+' días</span>'+
+            '<span class="sc-subtotal">RD$ '+scSubtotal.toLocaleString('es-DO')+'</span>'+
+          '</div>'
+        : '') +
       '</div>';
     card.addEventListener('click', function() {
       if (circuitOn) {
@@ -623,6 +661,9 @@ function renderScreens() {
       if (selected.has(s.cod)) {
         selected.delete(s.cod);
         delete screenFreq[s.cod];
+        delete screenDays[s.cod];
+        delete screenStart[s.cod];
+        delete screenEnd[s.cod];
       } else {
         selected.add(s.cod);
         screenFreq[s.cod] = 1.0; // full por defecto
@@ -643,11 +684,19 @@ function calc() {
     var f = screenFreq[s.cod] !== undefined ? screenFreq[s.cod] : freqMultiplier;
     return a + Math.round(s.daily * f);
   }, 0);
-  var gross = dailyTotal * days;
+  // Calcular total usando días individuales de cada pantalla
+  var gross = sel.reduce(function(a,s){
+    var f = screenFreq[s.cod] || 1.0;
+    var d = screenDays[s.cod] || days;
+    return a + Math.round(s.daily * f * d);
+  }, 0);
   var net = gross * (1 - discount/100);
   var itbis = net * 0.18;
   var totalTax = net + itbis;
-  var totalTraffic = sel.reduce(function(a,s){ return a + Math.round(s.traffic/30*days); }, 0);
+  var totalTraffic = sel.reduce(function(a,s){
+    var d = screenDays[s.cod] || days;
+    return a + Math.round(s.traffic/30*d);
+  }, 0);
 
   var cpm = (totalTraffic > 0) ? (net / totalTraffic * 1000) : 0;
 
