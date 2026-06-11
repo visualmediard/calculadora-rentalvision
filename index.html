@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantalla Exterior - Mundial 2026</title>
+    <title>Pantalla Exterior - Resultados de Hoy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilos de fuente ultra-legibles para distancias extremas */
+        /* Estilos de fuente ajustados: Más pequeños pero con excelente legibilidad y escalabilidad */
         .font-huge {
-            font-size: 10rem;
+            font-size: 5rem;
             line-height: 1;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
             .font-huge {
-                font-size: 15rem;
+                font-size: 7rem;
             }
         }
-        @media (min-width: 1280px) {
+        @media (min-width: 1024px) {
             .font-huge {
-                font-size: 18rem;
+                font-size: 10rem;
+            }
+        }
+        @media (min-width: 1400px) {
+            .font-huge {
+                font-size: 12rem;
             }
         }
     </style>
@@ -28,22 +33,22 @@
     <!-- Contenedor Principal (100% del ancho y alto de la pantalla, sin bordes redondos para encaje perfecto de hardware) -->
     <div class="bg-slate-900 w-full h-full flex flex-col justify-between" id="match-card">
         
-        <!-- Encabezado Único del Torneo (Ajustado para ocupar el tope exacto 0px) -->
-        <div class="bg-green-600 text-center py-6 md:py-8 flex-none w-full">
-            <h1 id="tournament-name" class="text-3xl md:text-5xl lg:text-6xl font-black tracking-wider uppercase text-white">
-                Copa Mundial de Fútbol de 2026
+        <!-- Encabezado Único (Espaciado vertical balanceado con nuevo texto solicitado) -->
+        <div class="bg-green-600 text-center py-5 md:py-7 flex-none w-full shadow-lg">
+            <h1 id="tournament-name" class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-wider uppercase text-white">
+                Resultados de Hoy
             </h1>
         </div>
 
-        <!-- Área Principal del Marcador (Distribución simétrica a lo ancho de la pantalla) -->
-        <div class="flex-grow flex flex-col md:flex-row items-center justify-around px-8 py-4 md:py-0 space-y-4 md:space-y-0">
+        <!-- Área Principal del Marcador (Añadido 'gap' responsivo y padding proporcional para dar el máximo espacio físico posible) -->
+        <div class="flex-grow flex flex-col md:flex-row items-center justify-center p-6 md:p-12 lg:p-16 gap-8 md:gap-12 lg:gap-20">
             
-            <!-- Equipo Local -->
+            <!-- Equipo Local (Escala fluido con max-width controlado) -->
             <div class="flex flex-col items-center w-full md:w-2/5 text-center justify-center">
-                <!-- Contenedor de bandera con marcador de posición CSS de seguridad -->
-                <div class="relative w-48 h-32 md:w-64 md:h-44 lg:w-80 lg:h-56 bg-slate-800 rounded-2xl shadow-2xl border-4 border-slate-700 overflow-hidden mb-4">
+                <!-- Contenedor de bandera responsiva con proporciones dinámicas -->
+                <div class="relative w-40 h-24 sm:w-56 sm:h-36 md:w-64 md:h-40 lg:w-80 lg:h-52 xl:w-96 xl:h-60 bg-slate-800 rounded-2xl shadow-2xl border-4 border-slate-700 overflow-hidden mb-4 transition-all">
                     <!-- Iniciales de respaldo -->
-                    <div id="home-flag-fallback" class="absolute inset-0 flex items-center justify-center font-black text-4xl md:text-6xl text-slate-500 bg-slate-800 uppercase tracking-widest">
+                    <div id="home-flag-fallback" class="absolute inset-0 flex items-center justify-center font-black text-3xl md:text-5xl text-slate-500 bg-slate-800 uppercase tracking-widest">
                         MX
                     </div>
                     <!-- Imagen de la bandera que se muestra suavemente al cargar -->
@@ -53,24 +58,24 @@
                          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0"
                          onload="this.classList.remove('opacity-0')">
                 </div>
-                <h2 id="home-name" class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-widest text-green-400">MÉXICO</h2>
+                <h2 id="home-name" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-widest text-green-400">MÉXICO</h2>
             </div>
 
-            <!-- Marcador Gigante Central (Desplazado ligeramente hacia arriba para pantallas grandes con transform) -->
-            <div class="flex flex-col items-center justify-center w-full md:w-1/5 my-4 md:my-0 transform md:-translate-y-8 lg:-translate-y-12 transition-transform duration-300">
-                <div class="flex items-center justify-center space-x-6 md:space-x-10">
+            <!-- Marcador Central (Tamaño de marcador moderado, centrado y con espacio holgado a los lados) -->
+            <div class="flex flex-col items-center justify-center w-full md:w-1/5 my-2 md:my-0 px-4">
+                <div class="flex items-center justify-center space-x-4 md:space-x-8">
                     <span id="home-score" class="font-huge font-black text-white tracking-tighter">1</span>
-                    <span class="text-5xl md:text-7xl font-bold text-slate-500">-</span>
+                    <span class="text-3xl sm:text-4xl md:text-6xl font-bold text-slate-500">-</span>
                     <span id="away-score" class="font-huge font-black text-white tracking-tighter">1</span>
                 </div>
             </div>
 
-            <!-- Equipo Visitante -->
+            <!-- Equipo Visitante (Escala fluido con max-width controlado) -->
             <div class="flex flex-col items-center w-full md:w-2/5 text-center justify-center">
-                <!-- Contenedor de bandera con marcador de posición CSS de seguridad -->
-                <div class="relative w-48 h-32 md:w-64 md:h-44 lg:w-80 lg:h-56 bg-slate-800 rounded-2xl shadow-2xl border-4 border-slate-700 overflow-hidden mb-4">
+                <!-- Contenedor de bandera responsiva con proporciones dinámicas -->
+                <div class="relative w-40 h-24 sm:w-56 sm:h-36 md:w-64 md:h-40 lg:w-80 lg:h-52 xl:w-96 xl:h-60 bg-slate-800 rounded-2xl shadow-2xl border-4 border-slate-700 overflow-hidden mb-4 transition-all">
                     <!-- Iniciales de respaldo -->
-                    <div id="away-flag-fallback" class="absolute inset-0 flex items-center justify-center font-black text-4xl md:text-6xl text-slate-500 bg-slate-800 uppercase tracking-widest">
+                    <div id="away-flag-fallback" class="absolute inset-0 flex items-center justify-center font-black text-3xl md:text-5xl text-slate-500 bg-slate-800 uppercase tracking-widest">
                         ZA
                     </div>
                     <!-- Imagen de la bandera -->
@@ -80,7 +85,7 @@
                          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0"
                          onload="this.classList.remove('opacity-0')">
                 </div>
-                <h2 id="away-name" class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-widest text-green-400">SUDAFRICA</h2>
+                <h2 id="away-name" class="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-widest text-green-400">SUDAFRICA</h2>
             </div>
             
         </div>
@@ -91,7 +96,7 @@
         // DATOS DEL PARTIDO (Modifica este objeto para actualizar la pantalla exterior)
         // =========================================================================
         const partidoData = {
-            torneo: "Copa Mundial de Fútbol de 2026",
+            torneo: "Resultados de Hoy",
             local: {
                 nombre: "México",
                 siglas: "MX",
